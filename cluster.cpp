@@ -19,6 +19,7 @@ void cluster::initializeCentriods(){
 	iObj.clearClusterData();
 	srand(time(NULL));
 	for(int i=0;i<numOfClusters;i++){
+		
 		iObj.openFiles();
 		int x = i + 1;
 		centroids[i].nameCentroid=iObj.getString(x);
@@ -26,7 +27,6 @@ void cluster::initializeCentriods(){
 		centroids[i].nameCentroid=centroids[i].nameCentroid.substr(centroids[i].nameCentroid.find(',')+1);
         centroids[i].nameCentroid=centroids[i].nameCentroid.substr(centroids[i].nameCentroid.find(',')+2);
         centroids[i].nameCentroid=centroids[i].nameCentroid.substr(0,centroids[i].nameCentroid.find('"'));
-        
       
         string value="cluster"+to_string(i+1)+" "+centroids[i].nameCentroid;
       	iObj.writeCluster(value);
@@ -34,6 +34,7 @@ void cluster::initializeCentriods(){
 		iObj.closeFiles();
 	}
 	//iObj.closeCluster();
+	cout<<"initializeCentriods success!!!"<<endl;  //zsq
 
 }
 
@@ -62,7 +63,7 @@ void cluster::doKmeans(){
 
 	bool somePointIsMoving=true;
 	cout<<"Init"<<endl;
-	iObj.openFiles();
+//	iObj.openFiles();   //zsq before is not //
 	double d,max=0;
 	int positionOfCluster=-1;
 	string clusterString,clusterString2,userString2;
@@ -70,12 +71,14 @@ void cluster::doKmeans(){
 	initializeCentriods();	
 	cout<<"Partition"<<endl;
 
+	iObj.openFiles();  // zsq before is not 
 	for(int i=0 ; i<numOfUsers ; i++){
 		cout<<i<<endl;
 		max=0;
 		userString=iObj.readUserInterests_baseCase();
 		userString2=userString;
 
+		//zsq lambda 
 		userString2.erase(remove_if(userString2.begin(), userString2.end(),[](char x){return ::isspace(x);}),userString2.end());
     	
     	userString=userString.substr(userString.find(',')+1);
